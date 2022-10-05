@@ -1,2 +1,22 @@
-package com.example.learn_jpa.controller;public class Controller {
+package com.example.learn_jpa.controller;
+
+import com.example.learn_jpa.controller.dto.request.CreateMember;
+import com.example.learn_jpa.service.ControllerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+@RequiredArgsConstructor
+@RestController
+public class Controller {
+
+    private final ControllerService controllerService;
+
+    @PostMapping("/create-member")
+    public void createMember(@RequestBody @Valid CreateMember createMember) {
+        controllerService.createMember(createMember);
+    }
 }
