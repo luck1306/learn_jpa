@@ -8,7 +8,7 @@ spring:
     generate-ddl: true
 
   datasource:
-    url: ${URL}
+    url: jdbc:mysql://${URL}
     username: ${USERNAME}
     password: ${PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
