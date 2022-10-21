@@ -2,7 +2,6 @@ package com.example.learn_jpa.entity.comment;
 
 import com.example.learn_jpa.entity.member.Member;
 import com.example.learn_jpa.entity.post.Post;
-import com.example.learn_jpa.global.entity.BaseIdEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @IdClass(CommentId.class)
 @Entity
-public class Comment extends BaseIdEntity {
+public class Comment { // 복합 키를 사용할 때는 BaseIdEntity 받으면 안 됨
 
     @Id
     @ManyToOne
