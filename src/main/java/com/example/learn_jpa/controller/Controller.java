@@ -1,6 +1,7 @@
 package com.example.learn_jpa.controller;
 
 import com.example.learn_jpa.controller.dto.request.CreateMember;
+import com.example.learn_jpa.controller.dto.request.PostRequest;
 import com.example.learn_jpa.service.ControllerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,5 +19,10 @@ public class Controller {
     @PostMapping("/create-member")
     public void createMember(@RequestBody @Valid CreateMember createMember) {
         controllerService.createMember(createMember);
+    }
+
+    @PostMapping("/create-post")
+    public void postMember(@RequestBody @Valid PostRequest postRequest) {
+        controllerService.postCreate(postRequest);
     }
 }
