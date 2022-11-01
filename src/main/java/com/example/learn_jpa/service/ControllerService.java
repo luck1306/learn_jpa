@@ -46,36 +46,25 @@ public class ControllerService {
     }
 
     public ResponseEntity<Object> getData(String url) {
-        HashMap<String, Object> result = new HashMap<>();
         ResponseEntity<Object> responseMap = new ResponseEntity<>(null, null, 200);
         try {
             RestTemplate restTemplate = new RestTemplate();
-
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(headers);
 
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
-
             responseMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Object.class);
-
-            result.put("statusCode", responseMap.getStatusCodeValue());
-            result.put("header", responseMap.getHeaders());
-            result.put("body", responseMap.getBody());
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-            result.put("statusCode", e.getStatusCode());
-            result.put("body", e.getStatusText());
             log.info("error");
             log.info(e.toString());
+
             return responseMap;
         }
         catch (Exception e) {
-            result.put("statusCode", "999");
-            result.put("body", "exception error");
             log.info(e.toString());
 
             return responseMap;
         }
-        System.out.println(responseMap);
         return responseMap;
     }
 }
