@@ -1,5 +1,6 @@
 package com.example.learn_jpa.service;
 
+import com.example.learn_jpa.controller.dto.Employee;
 import com.example.learn_jpa.controller.dto.request.CreateMember;
 import com.example.learn_jpa.controller.dto.request.PostRequest;
 import com.example.learn_jpa.entity.member.Member;
@@ -45,6 +46,7 @@ public class ControllerService {
                 .build());
     }
 
+    // external api
     public ResponseEntity<Object> getData(String url) {
         ResponseEntity<Object> responseMap = new ResponseEntity<>(null, null, 200);
         try {
@@ -66,5 +68,9 @@ public class ControllerService {
             return responseMap;
         }
         return responseMap;
+    }
+
+    public void save(Employee employee) {
+        //
     }
 }
