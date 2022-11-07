@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    MEMBER_NOT_FOUND("The Member Information can not found", 404);
+    POST_NOT_FOUND("The Post Information can not find", 404),
+    MEMBER_NOT_FOUND("The Member Information can not find", 404);
 
     private final String message;
     private final int statusCode;

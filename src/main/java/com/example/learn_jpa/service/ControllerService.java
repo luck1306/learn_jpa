@@ -1,16 +1,19 @@
 package com.example.learn_jpa.service;
 
-import com.example.learn_jpa.controller.dto.Employee;
+import com.example.learn_jpa.controller.dto.request.CommentDto;
 import com.example.learn_jpa.controller.dto.request.CreateMember;
 import com.example.learn_jpa.controller.dto.request.FollowDto;
 import com.example.learn_jpa.controller.dto.request.PostRequest;
 import com.example.learn_jpa.entity.Follow.Follow;
 import com.example.learn_jpa.entity.Follow.repository.FollowRepository;
+import com.example.learn_jpa.entity.comment.Comment;
+import com.example.learn_jpa.entity.comment.repository.CommentRepository;
 import com.example.learn_jpa.entity.member.Member;
 import com.example.learn_jpa.entity.member.repository.MemberRepository;
 import com.example.learn_jpa.entity.post.Post;
 import com.example.learn_jpa.entity.post.repository.PostRepository;
 import com.example.learn_jpa.exception.MemberNotFound;
+import com.example.learn_jpa.exception.PostNotFound;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -36,6 +39,8 @@ public class ControllerService {
 
     private final FollowRepository followRepository;
 
+    private final CommentRepository commentRepository;
+
     public void createMember(CreateMember createMember) {
         memberRepository.save(Member.builder()
                         .accountId(createMember.getAccountId())
@@ -48,6 +53,16 @@ public class ControllerService {
         postRepository.save(Post.builder()
                         .content(postRequest.getContent())
                         .member(member)
+                .build());
+    }
+
+    public void comment(CommentDto commentDto) {
+        commentRepository.save(Comment.builder()
+                        .comment(commentDto.getComment())
+                        .member(memberRepository.findById(commentDto.getMemberId())
+                                .orElseThrow(() -> {throw MemberNotFound.EXCEPTION;}))
+                        .post(postRepository.findById(commentDto.getPostId())
+                                .orElseThrow(() -> {throw PostNotFound.EXCEPTION;}))
                 .build());
     }
 
@@ -73,10 +88,6 @@ public class ControllerService {
             return responseMap;
         }
         return responseMap;
-    }
-
-    public void save(Employee employee) {
-        //
     }
 
     public Follow follow(FollowDto followDto) {

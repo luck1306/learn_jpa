@@ -1,21 +1,18 @@
 package com.example.learn_jpa.controller;
 
-import com.example.learn_jpa.controller.dto.Employee;
+import com.example.learn_jpa.controller.dto.request.CommentDto;
 import com.example.learn_jpa.controller.dto.request.CreateMember;
 import com.example.learn_jpa.controller.dto.request.FollowDto;
 import com.example.learn_jpa.controller.dto.request.PostRequest;
 import com.example.learn_jpa.entity.Follow.Follow;
 import com.example.learn_jpa.service.ControllerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -35,15 +32,12 @@ public class Controller {
         controllerService.postCreate(postRequest);
     }
 
+    @PostMapping("/comment")
+    public void comment(@RequestBody CommentDto commentDto) { controllerService.comment(commentDto);}
+
     @GetMapping("/data")
     public ResponseEntity<Object> data(@RequestParam String uri) {
         return controllerService.getData(uri);
-    }
-
-    @PostMapping(path = "/employee", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Object> saveEmployee(@RequestPart(value = "employee") Employee employee,
-                                               @RequestPart(value = "file") MultipartFile document) {
-        return new ResponseEntity<>(null, null, 200);
     }
 
     @PostMapping("/follow")
