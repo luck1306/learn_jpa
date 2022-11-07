@@ -2,11 +2,15 @@ package com.example.learn_jpa.service;
 
 import com.example.learn_jpa.controller.dto.Employee;
 import com.example.learn_jpa.controller.dto.request.CreateMember;
+import com.example.learn_jpa.controller.dto.request.FollowDto;
 import com.example.learn_jpa.controller.dto.request.PostRequest;
+import com.example.learn_jpa.entity.Follow.Follow;
+import com.example.learn_jpa.entity.Follow.repository.FollowRepository;
 import com.example.learn_jpa.entity.member.Member;
 import com.example.learn_jpa.entity.member.repository.MemberRepository;
 import com.example.learn_jpa.entity.post.Post;
 import com.example.learn_jpa.entity.post.repository.PostRepository;
+import com.example.learn_jpa.exception.MemberNotFound;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -20,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashMap;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +33,8 @@ public class ControllerService {
     private final MemberRepository memberRepository;
 
     private final PostRepository postRepository;
+
+    private final FollowRepository followRepository;
 
     public void createMember(CreateMember createMember) {
         memberRepository.save(Member.builder()
@@ -72,5 +77,18 @@ public class ControllerService {
 
     public void save(Employee employee) {
         //
+    }
+
+    public Follow follow(FollowDto followDto) {
+
+        Member followerResult = memberRepository.findByAccountId(followDto.getFollower())
+                .orElseThrow(() -> {throw MemberNotFound.EXCEPTION;});
+        Member followingResult = memberRepository.findByAccountId(followDto.getFollowing())
+                .orElseThrow(() -> {throw MemberNotFound.EXCEPTION;});
+
+        return followRepository.save(Follow.builder()
+                .follower(followerResult)
+                .following(followingResult)
+                .build());
     }
 }

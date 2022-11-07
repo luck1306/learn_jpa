@@ -2,7 +2,9 @@ package com.example.learn_jpa.controller;
 
 import com.example.learn_jpa.controller.dto.Employee;
 import com.example.learn_jpa.controller.dto.request.CreateMember;
+import com.example.learn_jpa.controller.dto.request.FollowDto;
 import com.example.learn_jpa.controller.dto.request.PostRequest;
+import com.example.learn_jpa.entity.Follow.Follow;
 import com.example.learn_jpa.service.ControllerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -23,12 +25,12 @@ public class Controller {
 
     private final ControllerService controllerService;
 
-    @PostMapping("/create-member")
+    @PostMapping("/member")
     public void createMember(@RequestBody @Valid CreateMember createMember) {
         controllerService.createMember(createMember);
     }
 
-    @PostMapping("/create-post")
+    @PostMapping("/post")
     public void postMember(@RequestBody @Valid PostRequest postRequest) {
         controllerService.postCreate(postRequest);
     }
@@ -42,5 +44,10 @@ public class Controller {
     public ResponseEntity<Object> saveEmployee(@RequestPart(value = "employee") Employee employee,
                                                @RequestPart(value = "file") MultipartFile document) {
         return new ResponseEntity<>(null, null, 200);
+    }
+
+    @PostMapping("/follow")
+    public Follow follow(@RequestBody FollowDto followDto) {
+        return controllerService.follow(followDto);
     }
 }
