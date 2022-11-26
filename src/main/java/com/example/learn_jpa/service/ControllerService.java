@@ -4,6 +4,7 @@ import com.example.learn_jpa.controller.dto.request.CommentDto;
 import com.example.learn_jpa.controller.dto.request.CreateMember;
 import com.example.learn_jpa.controller.dto.request.FollowDto;
 import com.example.learn_jpa.controller.dto.request.PostRequest;
+import com.example.learn_jpa.controller.dto.response.PasswordResponse;
 import com.example.learn_jpa.entity.Follow.Follow;
 import com.example.learn_jpa.entity.Follow.repository.FollowRepository;
 import com.example.learn_jpa.entity.comment.Comment;
@@ -26,6 +27,9 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -101,5 +105,16 @@ public class ControllerService {
                 .follower(followerResult)
                 .following(followingResult)
                 .build());
+    }
+
+    public List<PasswordResponse> getListByPassword(String password) {
+        List<Member> list = memberRepository.findByPassword(password)
+                .orElseThrow(RuntimeException::new);
+        return list.stream().map(member -> {
+            return PasswordResponse.builder()
+                    .id(member.getId())
+                    .accountId(member.getAccountId())
+                    .build();
+        }).collect(Collectors.toList());
     }
 }
