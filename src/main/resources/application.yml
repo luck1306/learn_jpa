@@ -8,9 +8,8 @@ spring:
     generate-ddl: true
   servlet:
     multipart:
-      max-file-size: 500KB
-      max-request-size: 500KB
-
+      max-file-size: 500KB # max value of one file size
+      max-request-size: 500KB # max value : all size of files
   datasource:
     url: ${URL}
     username: ${USERNAME}

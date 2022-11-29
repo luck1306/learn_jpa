@@ -1,10 +1,10 @@
 package com.example.learn_jpa.file.contoller;
 
+import com.example.learn_jpa.file.service.DBService;
 import com.example.learn_jpa.file.service.FileStorageService;
 import com.example.learn_jpa.file.model.FileInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 public class FileController {
 
     private final FileStorageService service;
+
+    private final DBService dbService;
 
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file")MultipartFile file) {
@@ -52,5 +55,10 @@ public class FileController {
     @GetMapping("/{filename:.+}")
     public Resource getFile(@PathVariable String filename) {
         return service.load(filename);
+    }
+
+    @PostMapping("/upload-db")
+    public String uploadFileDB(@RequestParam("file") MultipartFile file) throws IOException {
+        return dbService.saveFile(file);
     }
 }
