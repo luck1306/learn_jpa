@@ -14,6 +14,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 @Service
@@ -59,12 +60,23 @@ public class FileStorageService {
         FileSystemUtils.deleteRecursively(root.toFile());
     }
 
-    public Stream<Path> loadAll() {
-        try {
-            return Files.walk(this.root, 1)
-                    .filter(path -> !path.equals(this.root)).map(this.root::relativize);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not load the files!");
-        }
+    public Supplier<Stream<Path>> loadAll() {
+        return new Supplier<Stream<Path>>() {
+            
+            @Override
+            public Stream<Path> get() {
+                try {
+                    Path uploads = Path.of("uploads");
+                    return Files.walk(uploads, 1)
+                            .filter(path -> !path.equals(uploads)).map(uploads::relativize);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+    }
+    
+    public Path getRoot() {
+        return this.root;
     }
 }

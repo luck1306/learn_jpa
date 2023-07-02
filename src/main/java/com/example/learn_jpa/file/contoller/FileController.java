@@ -16,8 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @RequiredArgsConstructor
@@ -43,13 +47,15 @@ public class FileController {
 
     @GetMapping
     public List<FileInfo> getListFiles() {
-        return service.loadAll()
-                .map(path -> {
-                    String filename = path.getFileName().toString();
-                    String url = MvcUriComponentsBuilder
-                            .fromMethodName(FileController.class, path.getFileName().toString()).build().toString();
-                    return new FileInfo(filename, url);
-                }).collect(Collectors.toList());
+        Supplier<Stream<Path>> paths = service.loadAll();
+        List<FileInfo> ls = new ArrayList<>();
+        for (Path path : paths.get().collect(Collectors.toList())) {
+            String filename = path.getFileName().toString();
+            String url = MvcUriComponentsBuilder.fromMethodName(FileController.class, path.getFileName().toString()).build().toString();
+//            String url = path.toUri().toString().substring(8);
+            ls.add(new FileInfo(filename, url));
+        }
+        return ls;
     }
 
     @GetMapping("/{filename:.+}")

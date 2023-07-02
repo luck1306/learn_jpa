@@ -11,7 +11,7 @@ spring:
       max-file-size: 500KB # max value of one file size
       max-request-size: 500KB # max value : all size of files
   datasource:
-    url: ${URL}
-    username: ${USERNAME}
-    password: ${PASSWORD}
+    url: jdbc:mysql://localhost:3306/jpa
+    username: root
+    password: Theodore1@
     driver-class-name: com.mysql.cj.jdbc.Driver

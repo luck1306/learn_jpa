@@ -9,6 +9,8 @@ import com.example.learn_jpa.entity.Follow.Follow;
 import com.example.learn_jpa.entity.Follow.repository.FollowRepository;
 import com.example.learn_jpa.entity.comment.Comment;
 import com.example.learn_jpa.entity.comment.repository.CommentRepository;
+import com.example.learn_jpa.entity.dummy.Dummy;
+import com.example.learn_jpa.entity.dummy.DummyRepository;
 import com.example.learn_jpa.entity.member.Member;
 import com.example.learn_jpa.entity.member.repository.MemberRepository;
 import com.example.learn_jpa.entity.post.Post;
@@ -44,6 +46,8 @@ public class ControllerService {
     private final FollowRepository followRepository;
 
     private final CommentRepository commentRepository;
+
+    private final DummyRepository dummyRepository;
 
     public void createMember(CreateMember createMember) {
         memberRepository.save(Member.builder()
@@ -117,4 +121,13 @@ public class ControllerService {
                     .build();
         }).collect(Collectors.toList());
     }
+
+    public void test(String data) {
+        // 안되는듯
+        List<Member> members = memberRepository.findAll();
+        Dummy dummy = new Dummy(data, members.get(0).getId());
+        dummyRepository.save(dummy);
+    }
+
+    
 }

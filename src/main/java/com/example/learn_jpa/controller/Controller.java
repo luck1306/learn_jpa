@@ -52,4 +52,10 @@ public class Controller {
     public List<PasswordResponse> getIdByPw(@PathVariable String pw) {
         return controllerService.getListByPassword(pw);
     }
+
+    @PostMapping("/sss")
+    public void gg(@RequestBody String data) {
+        controllerService.test(data);
+    }
 }
+//
